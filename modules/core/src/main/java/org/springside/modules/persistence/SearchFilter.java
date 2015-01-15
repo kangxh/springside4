@@ -19,7 +19,7 @@ import static org.springside.modules.persistence.SearchFilter.Type.DATETIME;
 public class SearchFilter {
 
     public enum Operator {
-        EQ, LIKE, GT, LT, GTE, LTE
+        EQ, NEQ, LIKE, GT, LT, GTE, LTE, IN
     }
 
     public enum Type {
@@ -46,8 +46,14 @@ public class SearchFilter {
             // 过滤掉空值
             String key = entry.getKey();
             Object value = entry.getValue();
-            if (StringUtils.isBlank((String) value)) {
+            if (value == null) {
                 continue;
+            }
+
+            if (value instanceof String) {
+                if (StringUtils.isBlank((String) value)) {
+                    continue;
+                }
             }
 
             // 拆分operator与filedAttribute

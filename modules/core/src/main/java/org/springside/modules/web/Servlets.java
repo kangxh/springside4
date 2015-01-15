@@ -160,7 +160,7 @@ public class Servlets {
 				if ((values == null) || (values.length == 0)) {
 					// Do nothing, no values found at all.
 				} else if (values.length > 1) {
-					params.put(unprefixed, values);
+					params.put(unprefixed.replace("[]",""), values);
 				} else {
 					params.put(unprefixed, values[0]);
 				}
