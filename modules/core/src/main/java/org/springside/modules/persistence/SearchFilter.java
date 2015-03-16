@@ -7,6 +7,7 @@ package org.springside.modules.persistence;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -66,11 +67,14 @@ public class SearchFilter {
             if (names.length == 3) {
                 switch (Type.valueOf(names[2])) {
                     case DATETIME:
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        try {
-                            value = sdf.parse(value.toString());
-                        } catch (ParseException e) {
-                            throw new IllegalArgumentException(key + " is not the time format yyyy-MM-dd HH: mm: ss");
+                        if (value instanceof Date) {
+                        } else {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            try {
+                                value = sdf.parse(value.toString());
+                            } catch (ParseException e) {
+                                throw new IllegalArgumentException(key + " is not the time format yyyy-MM-dd HH: mm: ss");
+                            }
                         }
                         break;
                 }
