@@ -1,16 +1,21 @@
-/*******************************************************************************
+/**
+ * ****************************************************************************
  * Copyright (c) 2005, 2014 springside.github.io
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
- *******************************************************************************/
+ * *****************************************************************************
+ */
 package org.springside.modules.persistence;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Maps;
@@ -24,7 +29,8 @@ public class SearchFilter {
     }
 
     public enum Type {
-        DATETIME
+        DATETIME,
+        INTEGER
     }
 
     public String fieldName;
@@ -75,6 +81,20 @@ public class SearchFilter {
                             } catch (ParseException e) {
                                 throw new IllegalArgumentException(key + " is not the time format yyyy-MM-dd HH: mm: ss");
                             }
+                        }
+                        break;
+                    case INTEGER:
+                        if (value.getClass().isArray()) {
+                            List<Integer> valueList = Lists.newArrayList();
+                            List<Object> objectList = Arrays.asList((Object[])value);
+                            for (Object o : objectList) {
+                                valueList.add(Integer.valueOf(o.toString()));
+                            }
+                            value = valueList;
+                        } else if (value instanceof Iterable) {
+
+                        } else {
+                            value = Integer.valueOf(value.toString());
                         }
                         break;
                 }

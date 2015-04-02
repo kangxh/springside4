@@ -1,8 +1,10 @@
-/*******************************************************************************
+/**
+ * ****************************************************************************
  * Copyright (c) 2005, 2014 springside.github.io
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
- *******************************************************************************/
+ * *****************************************************************************
+ */
 package org.springside.modules.persistence;
 
 import java.util.Arrays;
@@ -70,8 +72,8 @@ public class DynamicSpecifications {
                             case IN:
                                 if (filter.value instanceof Iterable) {
                                     predicates.add(builder.in(expression).value(filter.value));
-                                } else if (filter.value instanceof String[]) {
-                                    predicates.add(builder.in(expression).value(Arrays.asList(((String[]) filter.value))));
+                                } else if (filter.value.getClass().isArray()) {
+                                    predicates.add(builder.in(expression).value(Arrays.asList(filter.value)));
                                 } else {
                                     // only one element, convert to equal expression
                                     predicates.add(builder.equal(expression, filter.value));
