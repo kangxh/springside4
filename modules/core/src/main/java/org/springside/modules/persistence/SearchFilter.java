@@ -30,7 +30,8 @@ public class SearchFilter {
 
     public enum Type {
         DATETIME,
-        INTEGER
+        INTEGER,
+        BOOLEAN
     }
 
     public String fieldName;
@@ -95,6 +96,12 @@ public class SearchFilter {
 
                         } else {
                             value = Integer.valueOf(value.toString());
+                        }
+                        break;
+                    case BOOLEAN:
+                        if (value instanceof Boolean) {
+                        } else {
+                            value = Boolean.valueOf(value.toString());
                         }
                         break;
                 }
