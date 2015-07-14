@@ -7,6 +7,7 @@ package org.springside.modules.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
@@ -23,6 +24,9 @@ import org.springframework.core.io.ResourceLoader;
  * @author calvin
  */
 public class PropertiesLoader {
+	private static final String NAME_PREFIX = "#{";
+	private static final String VALUE_PREFIX = "${";
+	private static final String SUFFIX = "}";
 
 	private static Logger logger = LoggerFactory.getLogger(PropertiesLoader.class);
 
@@ -139,7 +143,24 @@ public class PropertiesLoader {
 			try {
 				Resource resource = resourceLoader.getResource(location);
 				is = resource.getInputStream();
+
+				String propsStr = IOUtils.toString(is, "UTF-8");
+
+				is = IOUtils.toInputStream(propsStr);
+
 				props.load(is);
+
+				for (Enumeration<?> i1 = props.keys(); i1.hasMoreElements(); ) {
+					String name1 = (String) i1.nextElement();
+
+					propsStr = propsStr.replace(VALUE_PREFIX + name1 + SUFFIX,
+							props.getProperty(name1));
+				}
+
+				is = IOUtils.toInputStream(propsStr);
+
+				props.load(is);
+
 			} catch (IOException ex) {
 				logger.info("Could not load properties from path:{}, {} ", location, ex.getMessage());
 			} finally {
